@@ -16,45 +16,38 @@ canvas.width = width
 canvas.height = height
 
 function connect() {
-  try {
-    ws.host = document.location.host
-    ws.socket = {}
+  ws.host = document.location.host
+  ws.socket = {}
 
-    ws.socket.connect = new window.WebSocket('wss://' + ws.host)
-    ws.socket.connect.onerror = function () {
-      console.log('could not connect to ', ws.host)
-      ws.socket.connect.close()
-    }
-    
-    ws.socket.connect.onmessage = function (data) {
-      data = JSON.parse(data.data)
-      display(data)
-    }
+  ws.socket.connect = new window.WebSocket('wss://' + ws.host)
+  ws.socket.connect.onerror = function () {
+    console.log('could not connect to ', ws.host)
+    ws.socket.connect.close()
+  }
 
-    ws.socket.connect.onopen = function () {
-      
-      if (ws.socket.connect.readyState === 1) {
-      
-      } else {
-        setTimeout(() => {
-          connect()
-        }, 1500)
-      }
-    }
+  ws.socket.connect.onmessage = function (data) {
+    data = JSON.parse(data.data)
+    display(data)
+  }
 
-    ws.socket.connect.onclose = function () {
-      console.log('reconnecting')
+  ws.socket.connect.onopen = function () {      
+    if (ws.socket.connect.readyState !== 1) {
       setTimeout(() => {
         connect()
       }, 1500)
     }
-  } catch (err) {
-    console.log(err)
+  }
+
+  ws.socket.connect.onclose = function () {
+    console.log('reconnecting')
+    setTimeout(() => {
+      connect()
+    }, 1500)
   }
 }
 
 function display(data) {
-  console.log('displaying', data, ws)
+  console.log('displaying', data)
   let img = new Image
   img.onload = function () {
      ctx.drawImage(img, 0, 0) 

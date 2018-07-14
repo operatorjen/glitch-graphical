@@ -9,6 +9,8 @@ app.use(express.static(path.join(__dirname, '/public')))
 
 const server = http.createServer(app)
 
+let subhosts = {}
+
 server.listen(process.env.PORT || 8080)
 
 const wss = new WebSocketServer({
@@ -17,16 +19,12 @@ const wss = new WebSocketServer({
 
 function broadcast (data, sendToAll) {
   wss.clients.forEach(function each (client) {
-    try {
-      if (client && client.send) {
-        if (sendToAll) {
-          client.send(JSON.stringify(data))
-        } else if (client === ws) {
-          client.send(JSON.stringify(data))
-        }
+    if (client && client.send) {
+      if (sendToAll) {
+        client.send(JSON.stringify(data))
+      } else if (client === ws) {
+        client.send(JSON.stringify(data))
       }
-    } catch (e) {
-
     }
   })
 }
@@ -37,7 +35,8 @@ wss.on('connection', (ws) => {
     
     switch (data.type) {
       case 'pad.update':
-        broadcast(data, true)
+        subhosts[ws] = data.message
+        broadcast(data)
         break
       default:
         break
@@ -45,6 +44,16 @@ wss.on('connection', (ws) => {
   })
 })
 
-app.get('/', function(request, response) {
-  response.sendFile(__dirname + '/views/index.html');
-});
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/views/index.html')
+})
+
+app.get('/:id', (req, res) => {
+  console.log(req.params)
+  
+  if (subhosts[req.params.id]) {
+    broadcast(subhosts[req.params.id])
+  }
+  
+  res.sendFile(__dirname + '/views/index.html')
+})
