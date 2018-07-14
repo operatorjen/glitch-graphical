@@ -57,6 +57,8 @@ app.get('/:id', (req, res) => {
   
   if (subhosts[req.params.id]) {
     broadcast(subhosts[req.params.id])
+  } else {
+    subhosts[req.params.id] = ''  
   }
   
   res.sendFile(__dirname + '/views/index.html')

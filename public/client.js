@@ -1,14 +1,5 @@
 let ws = {}
 
-const canvas = document.querySelector('canvas')
-let ctx = canvas.getContext('2d')
-
-let width = window.innerWidth
-let height = window.innerHeight
-let clientX, clientY
-let currX = 0, currY = 0, prevX = 0, prevY = 0
-let flag = false, drawing = false, currColor
-let color = 'rgb(10, 200, 150)'
 let id = document.location.pathname
 
 if (id === '/') {
@@ -17,19 +8,26 @@ if (id === '/') {
   btn.onclick = function () {
     const pow = Math.pow(36, 10)
     const newId = Math.round(pow - Math.random() * pow).toString(36).slice(1)
-    window.open(`${document.location.host}/${newId}`, '_blank')
+    window.open(`/${newId}`, '_blank')
   }
   document.body.appendChild(btn)
 } else {
-  
-  
+  const canvas = document.querySelector('canvas')
+  let ctx = canvas.getContext('2d')
+
+  let width = window.innerWidth
+  let height = window.innerHeight
+  let clientX, clientY
+  let currX = 0, currY = 0, prevX = 0, prevY = 0
+  let flag = false, drawing = false, currColor
+  let color = 'rgb(10, 200, 150)'
   const brushWidth = 3
 
   canvas.width = width
   canvas.height = height
 
   function connect() {
-    ws.host = document.location.pathname
+    ws.host = document.location.host
 
     if (!ws.host) {
       return 
@@ -40,7 +38,7 @@ if (id === '/') {
       ws.socket[id] = {} 
     }
 
-    ws.socket[id].connect = new window.WebSocket('wss://' + ws.host)
+    ws.socket[id].connect = new window.WebSocket(`wss://${ws.host}${id}`)
     ws.socket[id].connect.onerror = function () {
       console.log('could not connect to ', ws.host)
       ws.socket[id].connect.close()
@@ -93,7 +91,7 @@ if (id === '/') {
   }
 
   function updateDisplay() {
-    ws.socket.connect.send(JSON.stringify({
+    ws.socket[id].connect.send(JSON.stringify({
       type: 'pad.update',
       message: canvas.toDataURL('image/png')
     }))
