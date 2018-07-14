@@ -1,22 +1,39 @@
-// server.js
-// where your node app starts
+const WebSocketServer = require('ws').Server
+const http = require('http')
+const path = require('path')
+const express = require('express')
+const ws = require('ws')
 
-// init project
-var express = require('express');
-var app = express();
+const app = express()
+app.use(express.static(path.join(__dirname, '/public')))
 
-// we've started you off with Express, 
-// but feel free to use whatever libs or frameworks you'd like through `package.json`.
+const server = http.createServer(app)
 
-// http://expressjs.com/en/starter/static-files.html
-app.use(express.static('public'));
+server.listen(process.env.PORT || 8080)
 
-// http://expressjs.com/en/starter/basic-routing.html
-app.get('/', function(request, response) {
-  response.sendFile(__dirname + '/views/index.html');
-});
+const wss = new WebSocketServer({
+  server: server
+})
 
-// listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
-  console.log('Your app is listening on port ' + listener.address().port);
-});
+function broadcast (data, ws, sendToAll) {
+  wss.clients.forEach(function each (client) {
+    try {
+      if (client && client.send) {
+        if (sendToAll) {
+          client.send(JSON.stringify(data))
+        } else if (client === ws) {
+          client.send(JSON.stringify(data))
+        }
+      }
+    } catch (e) {
+
+    }
+  })
+}
+
+wss.on('connection', (ws) => {
+  ws.on('message', (data) => {
+    data = JSON.parse(data)
+    pad.update(data, ws, broadcast)
+  })
+})
