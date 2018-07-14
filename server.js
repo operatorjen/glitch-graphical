@@ -37,8 +37,7 @@ wss.on('connection', (ws) => {
     
     switch (data.type) {
       case 'pad.update':
-        console.log('updating')
-        broadcast(data.message)
+        broadcast(data, true)
         break
       default:
         break

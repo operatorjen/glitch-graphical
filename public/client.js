@@ -25,13 +25,16 @@ function connect() {
       console.log('could not connect to ', ws.host)
       ws.socket.connect.close()
     }
+    
+    ws.socket.connect.onmessage = function (data) {
+      data = JSON.parse(data.data)
+      display(data)
+    }
 
     ws.socket.connect.onopen = function () {
+      
       if (ws.socket.connect.readyState === 1) {
-        ws.socket.connect.onmessage = function (data) {
-          data = JSON.parse(data.data)
-          display(data)
-        }
+      
       } else {
         setTimeout(() => {
           connect()
@@ -49,8 +52,6 @@ function connect() {
     console.log(err)
   }
 }
-
-connect()
 
 function display(data) {
   console.log('displaying', data, ws)
@@ -78,7 +79,6 @@ function draw() {
 }
 
 function updateDisplay() {
-  console.log('got here', ws.socket.connect)
   ws.socket.connect.send(JSON.stringify({
     type: 'pad.update',
     message: canvas.toDataURL('image/png')
@@ -150,4 +150,5 @@ function setDraw() {
   }, false)
 }
 
+connect()
 setDraw()
