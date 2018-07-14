@@ -4,22 +4,23 @@ const canvas = document.querySelector('canvas')
 
 function connect() {
   try {
-    const host = document.location.host
-    const protocol = document.location.protocol
+    ws.host = document.location.host
+    ws.protocol = document.location.protocol
+    ws.socket = {}
 
-    ws[host] = new window.WebSocket('ws' + (protocol === ('https:' || 'wss:') ? 's' : '') + '://' + host)
-    ws[host].onerror = function () {
+    ws.socket.connect = new window.WebSocket('ws' + (protocol === ('https:' || 'wss:') ? 's' : '') + '://' + host)
+    ws.socket.connect.onerror = function () {
       console.log('could not connect to ', host)
-      ws[host].close()
+      ws.socket.connect.close()
     }
 
-    ws[host[1]].onopen = function () {
-      if (ws[host].readyState === 1) {
-        ws[host].send(JSON.stringify({
+    ws.socket.connect.onopen = function () {
+      if (ws.socket.connect.readyState === 1) {
+        ws.socket.connect.send(JSON.stringify({
           type: 'pad.display'
         }))
 
-        ws[host[1]].onmessage = function (data) {
+        ws.socket.connect.onmessage = function (data) {
           data = JSON.parse(data.data)
           display(data)
         }
@@ -30,7 +31,7 @@ function connect() {
       }
     }
 
-    ws[host[1]].onclose = function () {
+    ws.socket.onclose = function () {
       console.log('reconnecting')
       setTimeout(() => {
         connect()
@@ -44,5 +45,5 @@ function connect() {
 connect()
 
 function display(data) {
-  console.log('displaying', data)
+  console.log('displaying', data, ws)
 }
