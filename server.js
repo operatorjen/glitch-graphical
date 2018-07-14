@@ -15,7 +15,7 @@ const wss = new WebSocketServer({
   server: server
 })
 
-function broadcast (data, ws, sendToAll) {
+function broadcast (data, sendToAll) {
   wss.clients.forEach(function each (client) {
     try {
       if (client && client.send) {
@@ -36,11 +36,9 @@ wss.on('connection', (ws) => {
     data = JSON.parse(data)
     
     switch (data.type) {
-      case 'update':
+      case 'pad.update':
         console.log('updating')
-        break
-      case 'display':
-        console.log('displaying')
+        broadcast(data.message)
         break
       default:
         break
