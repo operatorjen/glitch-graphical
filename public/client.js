@@ -7,9 +7,10 @@ let width = window.innerWidth
 let height = window.innerHeight
 let clientX, clientY
 let currX = 0, currY = 0, prevX = 0, prevY = 0
-let flag = false, drawing = false, color, currColor
+let flag = false, drawing = false, currColor
+let color = 'rgb(10, 200, 150)'
 
-const brushWidth = 5
+const brushWidth = 3
 
 canvas.width = width
 canvas.height = height
@@ -62,29 +63,22 @@ function display(data) {
 
 function draw() {
   ctx.lineCap = 'round';
-  ctx.globalCompositeOperation = 'screen';
+  ctx.globalCompositeOperation = 'screen'
   ctx.beginPath();
   ctx.moveTo(prevX, prevY);
   ctx.lineTo(currX, currY);
   ctx.strokeStyle = color;
   ctx.lineWidth = brushWidth;
-  ctx.stroke();
-  ctx.shadowBlur = 10;
-  ctx.shadowColor = 'rgba(255, 255, 255, 0.95)';
-  ctx.stroke();
-  ctx.shadowBlur = 12;
-  ctx.shadowColor = 'rgba(255, 255, 255, 0.85)';
-  ctx.stroke();
-  ctx.shadowBlur = 15;
-  ctx.shadowColor = currColor;
-  ctx.stroke();
-  ctx.shadowBlur = 18;
-  ctx.shadowColor = currColor;
-  ctx.stroke();
-  ctx.shadowBlur = 30;
-  ctx.shadowColor = currColor;
+  ctx.stroke()
+  ctx.strokeStyle = 'rgb(200, 10, 10)'
+  ctx.lineWidth = brushWidth + 2
+  ctx.shadowBlur = 15
   ctx.stroke();
   ctx.closePath();
+}
+
+function updateDisplay() {
+  ws.socket.connect.onopen
 }
 
 function setDraw() {
@@ -120,6 +114,7 @@ function setDraw() {
       case 'up':
       case 'out':
         flag = false;
+        updateDisplay()
         break;
       case 'move':
         if (flag) {
@@ -134,20 +129,21 @@ function setDraw() {
   }
 
   canvas.addEventListener('mouseup', (e) => {
-    setMove('up', e);
-  }, false);
+    setMove('up', e)
+    updateDisplay()
+  }, false)
 
   canvas.addEventListener('mousedown', (e) => {
-    setMove('down', e);
-  }, false);
+    setMove('down', e)
+  }, false)
 
   canvas.addEventListener('mouseout', (e) => {
-    setMove('out', e);
-  }, false);
+    setMove('out', e)
+  }, false)
 
   canvas.addEventListener('mousemove', (e) => {
-    setMove('move', e);
-  }, false);
+    setMove('move', e)
+  }, false)
 }
 
 setDraw()
