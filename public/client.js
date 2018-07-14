@@ -28,10 +28,6 @@ if (id === '/') {
 
   function connect() {
     ws.host = document.location.host
-
-    if (!ws.host) {
-      return 
-    }
     ws.socket = {}
 
     if (!ws.socket[id]) {
@@ -45,8 +41,7 @@ if (id === '/') {
     }
 
     ws.socket[id].connect.onmessage = function (data) {
-      data = JSON.parse(data.data)
-      display(data)
+      display(JSON.parse(data.data).message)
     }
 
     ws.socket[id].connect.onopen = function () {      
@@ -71,7 +66,7 @@ if (id === '/') {
     img.onload = function () {
        ctx.drawImage(img, 0, 0) 
     }
-    img.src = data.message
+    img.src = data
   }
 
   function draw() {

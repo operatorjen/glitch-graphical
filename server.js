@@ -23,7 +23,6 @@ function broadcast (data, ws, sendToAll) {
       if (sendToAll) {
         client.send(JSON.stringify(data))
       } else if (client === ws) {
-        console.log('>>> sending to clients')
         client.send(JSON.stringify(data))
       }
     }
@@ -31,7 +30,8 @@ function broadcast (data, ws, sendToAll) {
 }
 
 wss.on('connection', (ws) => {
-  ws.onopen = function (data) {
+  console.log(ws)
+  ws.open = function (data) {
     console.log('open', data)
   }
   ws.on('message', (data) => {
@@ -53,7 +53,6 @@ app.get('/', (req, res) => {
 })
 
 app.get('/:id', (req, res) => {
-  console.log(req.params)
-  ws.
+  // console.log(req.params)
   res.sendFile(__dirname + '/views/index.html')
 })
