@@ -4,6 +4,8 @@ const path = require('path')
 const express = require('express')
 const ws = require('ws')
 
+const pad = require('./pad')
+
 const app = express()
 app.use(express.static(path.join(__dirname, '/public')))
 
