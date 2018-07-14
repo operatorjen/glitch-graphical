@@ -10,6 +10,7 @@ app.use(express.static(path.join(__dirname, '/public')))
 const server = http.createServer(app)
 
 let subhosts = {}
+let clients = {}
 
 server.listen(process.env.PORT || 8080)
 
@@ -22,8 +23,8 @@ function broadcast (data, ws, sendToAll) {
     if (client && client.send) {
       if (sendToAll) {
         client.send(JSON.stringify(data))
-      } else if (client === ws) {
-        client.send(JSON.stringify(data))
+      } else if (client.id === ws.id) {
+        clients[ws.id].send(JSON.stringify(data))
       }
     }
   })
@@ -37,10 +38,15 @@ wss.on('connection', (ws) => {
   ws.on('message', (data) => {
     data = JSON.parse(data)
     
+    if (ws.id && !clients[ws.id]) {
+      clients[ws.id] = ws  
+    }
+    
     switch (data.type) {
       case 'pad.update':
         subhosts[ws] = data.message
-        broadcast(data, ws)
+        ws.id = data.id
+        broadcast(data, ws.id)
         break
       default:
         break
@@ -53,6 +59,5 @@ app.get('/', (req, res) => {
 })
 
 app.get('/:id', (req, res) => {
-  // console.log(req.params)
   res.sendFile(__dirname + '/views/index.html')
 })
