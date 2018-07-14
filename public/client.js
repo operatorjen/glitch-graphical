@@ -1,42 +1,46 @@
-// client-side js
-// run by the browser each time your view template is loaded
+let ws = {}
 
-console.log('hello world :o');
+const canvas = document.querySelector('canvas')
 
-// our default array of dreams
-const dreams = [
-  'Find and count some sheep',
-  'Climb a really tall mountain',
-  'Wash the dishes'
-];
+function connect () {
+  try {
+    const host = document.location.split('://')
+    const protocol = host[0]
 
-// define variables that reference elements on our page
-const dreamsList = document.getElementById('dreams');
-const dreamsForm = document.forms[0];
-const dreamInput = dreamsForm.elements['dream'];
+    ws[host[1]] = new window.WebSocket('ws' + (protocol === ('https' || 'wss') ? 's' : '') + '://' + host[1])
+    ws[host[1]].onerror = function () {
+      console.log('could not connect to ', host[1])
+      ws[host[1]].close()
+    }
 
-// a helper function that creates a list item for a given dream
-const appendNewDream = function(dream) {
-  const newListItem = document.createElement('li');
-  newListItem.innerHTML = dream;
-  dreamsList.appendChild(newListItem);
+    ws[host[1]].onopen = function () {
+      if (ws[host[1]].readyState === 1) {
+        ws[host[1]].send(JSON.stringify({
+          type: 'pad.display'
+        }))
+
+        ws[host[1]].onmessage = function (data) {
+          data = JSON.parse(data.data)
+          display(data)
+        }
+      } else {
+        setTimeout(() => {
+          connect()
+        }, 1500)
+      }
+    }
+
+    ws[host[1]].onclose = function () {
+      console.log('reconnecting')
+      setTimeout(() => {
+        connect()
+      }, 1500)
+    }
+  } catch (err) {
+    console.log(err)
+  }
 }
 
-// iterate through every dream and add it to our page
-dreams.forEach( function(dream) {
-  appendNewDream(dream);
-});
-
-// listen for the form to be submitted and add a new dream when it is
-dreamsForm.onsubmit = function(event) {
-  // stop our form submission from refreshing the page
-  event.preventDefault();
-
-  // get dream value and add it to the list
-  dreams.push(dreamInput.value);
-  appendNewDream(dreamInput.value);
-
-  // reset form 
-  dreamInput.value = '';
-  dreamInput.focus();
-};
+function display(data) {
+  
+}
