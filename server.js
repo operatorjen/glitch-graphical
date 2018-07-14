@@ -4,8 +4,6 @@ const path = require('path')
 const express = require('express')
 const ws = require('ws')
 
-const pad = require('./pad')
-
 const app = express()
 app.use(express.static(path.join(__dirname, '/public')))
 
@@ -36,6 +34,20 @@ function broadcast (data, ws, sendToAll) {
 wss.on('connection', (ws) => {
   ws.on('message', (data) => {
     data = JSON.parse(data)
-    pad.update(data, ws, broadcast)
+    
+    switch (data.type) {
+      case 'update':
+        console.log('updating')
+        break
+      case 'display':
+        console.log('displaying')
+        break
+      default:
+        break
+    }
   })
 })
+
+app.get('/', function(request, response) {
+  response.sendFile(__dirname + '/views/index.html');
+});
