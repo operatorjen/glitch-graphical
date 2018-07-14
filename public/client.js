@@ -9,36 +9,46 @@ let clientX, clientY
 let currX = 0, currY = 0, prevX = 0, prevY = 0
 let flag = false, drawing = false, currColor
 let color = 'rgb(10, 200, 150)'
+let id = document.location.pathname || ''
 
+if (id) {
 const brushWidth = 3
 
 canvas.width = width
 canvas.height = height
 
 function connect() {
-  ws.host = document.location.host
+  ws.host = document.location.pathname
+  
+  if (!ws.host) {
+    return 
+  }
   ws.socket = {}
-
-  ws.socket.connect = new window.WebSocket('wss://' + ws.host)
-  ws.socket.connect.onerror = function () {
-    console.log('could not connect to ', ws.host)
-    ws.socket.connect.close()
+  
+  if (!ws.socket[id]) {
+    ws.socket[id] = {} 
   }
 
-  ws.socket.connect.onmessage = function (data) {
+  ws.socket[id].connect = new window.WebSocket('wss://' + ws.host)
+  ws.socket[id].connect.onerror = function () {
+    console.log('could not connect to ', ws.host)
+    ws.socket[id].connect.close()
+  }
+
+  ws.socket[id].connect.onmessage = function (data) {
     data = JSON.parse(data.data)
     display(data)
   }
 
-  ws.socket.connect.onopen = function () {      
-    if (ws.socket.connect.readyState !== 1) {
+  ws.socket[id].connect.onopen = function () {      
+    if (ws.socket[id].connect.readyState !== 1) {
       setTimeout(() => {
         connect()
       }, 1500)
     }
   }
 
-  ws.socket.connect.onclose = function () {
+  ws.socket[id].connect.onclose = function () {
     console.log('reconnecting')
     setTimeout(() => {
       connect()
