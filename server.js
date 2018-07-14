@@ -20,10 +20,10 @@ const wss = new WebSocketServer({
 function broadcast (data, ws, sendToAll) {
   wss.clients.forEach((client) => {
     if (client && client.send) {
-      console.log('>>>', ws)
       if (sendToAll) {
         client.send(JSON.stringify(data))
-      } else if (client == ws) {
+      } else if (client === ws) {
+        console.log('>>> sending to clients')
         client.send(JSON.stringify(data))
       }
     }
@@ -31,6 +31,9 @@ function broadcast (data, ws, sendToAll) {
 }
 
 wss.on('connection', (ws) => {
+  ws.onopen = function (data) {
+    console.log('open', data)
+  }
   ws.on('message', (data) => {
     data = JSON.parse(data)
     
@@ -51,5 +54,6 @@ app.get('/', (req, res) => {
 
 app.get('/:id', (req, res) => {
   console.log(req.params)
+  ws.
   res.sendFile(__dirname + '/views/index.html')
 })
