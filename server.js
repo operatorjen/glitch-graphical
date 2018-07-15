@@ -21,13 +21,13 @@ const wss = new WebSocketServer({
 
 function broadcast (data, ws, sendToAll) {
   wss.clients.forEach((client) => {
-    console.log(client.send, ws.id, client === ws)
+   // console.log(client.id, ws.id, client === clients[ws.id])
     if (client && client.send) {
       if (sendToAll) {
         client.send(JSON.stringify(data))
-      } else if (client === clients[ws.id] && client !== ws) {
+      } else if (client.id === ws.id) {
         console.log('got here', ws.id)
-        clients[ws.id].send(JSON.stringify(data))
+        client.send(JSON.stringify(data))
       }
     }
   })

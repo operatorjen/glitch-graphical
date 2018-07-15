@@ -62,7 +62,6 @@ if (id === '/') {
   }
 
   function display(data) {
-    console.log('displaying', data)
     let img = new Image
     img.onload = function () {
        ctx.drawImage(img, 0, 0) 
@@ -87,7 +86,6 @@ if (id === '/') {
   }
 
   function updateDisplay() {
-    console.log(ws.socket[id])
     ws.socket[id].connect.send(JSON.stringify({
       type: 'pad.update',
       message: canvas.toDataURL('image/png'),
