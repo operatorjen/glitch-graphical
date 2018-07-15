@@ -61,7 +61,7 @@ if (id === '/') {
     gridActive = !gridActive
 
     if (gridActive) {
-      gridColor = 'rgba(40, 150, 220, 0.5)'
+      gridColor = 'rgb(40, 150, 220)'
       displayGrid()
       gridBtn.classList.add('on') 
     } else {
@@ -73,13 +73,12 @@ if (id === '/') {
   function displayGrid() {
     const bw = canvas.width
     const bh = canvas.height
-    const p = 5
+    const p = 0
     
     for (let x = 0; x <= bw; x += 40) {
       ctx.moveTo(0.5 + x + p, p)
       ctx.lineTo(0.5 + x + p, bh + p)
     }
-
 
     for (let x = 0; x <= bh; x += 40) {
       ctx.moveTo(p, 0.5 + x + p)
@@ -91,7 +90,7 @@ if (id === '/') {
   }
 
   function hideGrid() {
-    gridColor = 'rgba(1, 1, 1, 1.0)'
+    //gridColor = 'rgb(1, 1, 1)'
     displayGrid()
   }
 
@@ -134,6 +133,7 @@ if (id === '/') {
   function display(data) {
     let img = new Image
     img.onload = function () {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
       ctx.drawImage(img, 0, 0) 
     }
     img.src = data
