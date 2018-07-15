@@ -174,7 +174,15 @@ if (id !== '/') {
           currY = clientY
 
           flag = true
-  
+          drawing = true
+          
+          if (drawing) {
+            ctx.beginPath()
+            ctx.fillStyle = color
+            ctx.fillRect(currX, currY, 3, 3)
+            ctx.closePath()
+            drawing = false
+          }
           break
         case 'up':
         case 'out':
