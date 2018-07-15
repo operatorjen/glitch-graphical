@@ -43,7 +43,7 @@ if (id === '/') {
   ctx.lineCap = 'round'
   ctx.globalCompositeOperation = 'screen'
   
-  const brushWidth = 2
+  const brushWidth = 5
 
   let width = window.innerWidth
   let height = window.innerHeight
@@ -61,12 +61,10 @@ if (id === '/') {
     gridActive = !gridActive
 
     if (gridActive) {
-      gridColor = 'rgb(40, 150, 220)'
       displayGrid()
       gridBtn.classList.add('on') 
     } else {
-      hideGrid()
-      gridBtn.classList.remove('on')  
+
     }
   }
 
@@ -74,6 +72,8 @@ if (id === '/') {
     const bw = canvas.width
     const bh = canvas.height
     const p = 0
+    
+    ctx.strokeWidth = 1
     
     for (let x = 0; x <= bw; x += 40) {
       ctx.moveTo(0.5 + x + p, p)
@@ -87,10 +87,12 @@ if (id === '/') {
 
     ctx.strokeStyle = gridColor
     ctx.stroke()
+    
+    ctx.strokeWidth = 5
   }
 
-  function hideGrid() {
-    //gridColor = 'rgb(1, 1, 1)'
+  function changeGrid() {
+    gridColor = 'rgb(1, 1, 1)'
     displayGrid()
   }
 
@@ -133,7 +135,6 @@ if (id === '/') {
   function display(data) {
     let img = new Image
     img.onload = function () {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
       ctx.drawImage(img, 0, 0) 
     }
     img.src = data
@@ -146,13 +147,13 @@ if (id === '/') {
     ctx.strokeStyle = color
     ctx.lineWidth = brushWidth
     ctx.stroke()
-    ctx.shadowBlur = 10
+    ctx.shadowBlur = 16
     ctx.shadowColor = 'rgba(255, 255, 255, 0.85)'
     ctx.stroke()
-    ctx.shadowBlur = 20
+    ctx.shadowBlur = 10
     ctx.shadowColor = color
     ctx.stroke()
-    ctx.shadowBlur = 50
+    ctx.shadowBlur = 20
     ctx.shadowColor = color
     ctx.stroke()
     ctx.closePath()
