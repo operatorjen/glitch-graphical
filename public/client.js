@@ -3,8 +3,10 @@ let ws = {}
 let id = document.location.pathname
 let color = 'rgba(240, 30, 80, 0.8)'
 let color2 = 'rgba(255, 255, 255, 0.01)'
+let gridActive = false
 
 const colorBtns = document.querySelectorAll('#colors button')
+const gridBtn = document.querySelector('#grid')
 
 colorBtns.forEach(c => {
   if (color === c.getAttribute('data-color')) {
@@ -47,6 +49,39 @@ if (id === '/') {
 
   canvas.width = width
   canvas.height = height
+  
+  gridBtn.onclick = function () {
+  gridActive = !gridActive
+  
+  if (gridActive) {
+    displayGrid()
+    gridBtn.classList.add('on') 
+  } else {
+    hideGrid()
+    gridBtn.classList.remove('on')  
+  }
+}
+
+function displayGrid() {
+  for (var x = 0; x <= bw; x += 40) {
+    ctx.moveTo(0.5 + x + p, p);
+    ctx.lineTo(0.5 + x + p, bh + p);
+  }
+
+
+  for (var x = 0; x <= bh; x += 40) {
+      context.moveTo(p, 0.5 + x + p);
+      context.lineTo(bw + p, 0.5 + x + p);
+  }
+
+  context.strokeStyle = "black";
+  context.stroke(); 
+}
+
+function hideGrid() {
+  
+}
+
 
   function connect() {
     ws.host = document.location.host
