@@ -87,6 +87,7 @@ if (id === '/') {
   }
 
   function updateDisplay() {
+    console.log(ws.socket[id])
     ws.socket[id].connect.send(JSON.stringify({
       type: 'pad.update',
       message: canvas.toDataURL('image/png'),

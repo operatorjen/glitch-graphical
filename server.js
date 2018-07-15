@@ -21,30 +21,31 @@ const wss = new WebSocketServer({
 
 function broadcast (data, ws, sendToAll) {
   wss.clients.forEach((client) => {
+    console.log(client.send, ws.id, client === ws)
     if (client && client.send) {
       if (sendToAll) {
         client.send(JSON.stringify(data))
       } else if (client === clients[ws.id] && client !== ws) {
-        console.log('got here', id)
+        console.log('got here', ws.id)
         clients[ws.id].send(JSON.stringify(data))
       }
     }
   })
 }
 
-wss.on('connection', (ws) => {
+wss.on('connection', (ws, req) => {
   ws.open = function (data) {
     console.log('open', data)
   }
   ws.on('message', (data) => {
     data = JSON.parse(data)
-
+    
     switch (data.type) {
       case 'pad.update':
-        subhosts[ws.id] = data.message
+        // subhosts[ws.id] = data.message
         clients[data.id] = ws
-        ws.id = ws.upgradeReq.url.split('/')[-1]
-        broadcast(data, data.id, ws)
+        ws.id = req.url.replace('/', '')
+        broadcast(data, ws)
         break
       default:
         break
