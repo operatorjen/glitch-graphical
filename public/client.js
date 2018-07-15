@@ -47,6 +47,7 @@ if (id === '/') {
     ws.socket[id].connect.onopen = function () {      
       if (ws.socket[id].connect.readyState !== 1) {
         setTimeout(() => {
+          console.log('reconnecting')
           connect()
         }, 1500)
       }
