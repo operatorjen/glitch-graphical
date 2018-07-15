@@ -42,13 +42,14 @@ if (id === '/') {
   ctxGrid.translate(0.5, 0.5)
   ctx.lineCap = 'round'
   ctx.globalCompositeOperation = 'screen'
+  
+  const brushWidth = 2
 
   let width = window.innerWidth
   let height = window.innerHeight
   let clientX, clientY
   let currX = 0, currY = 0, prevX = 0, prevY = 0
   let flag = false, drawing = false, currColor
-  const brushWidth = 2
   let gridColor = 'rgba(40, 150, 220, 0.8)'
 
   canvas.width = width
@@ -85,7 +86,7 @@ if (id === '/') {
       ctxGrid.lineTo(bw + p, 0.5 + x + p)
     }
 
-    ctxGrid.strokeStyle = 'rgba(40, 150, 220, 0.5)'
+    ctxGrid.strokeStyle = 'rgba(40, 150, 220, 0.4)'
     ctxGrid.stroke()
   }
 
@@ -144,9 +145,20 @@ if (id === '/') {
     ctx.strokeStyle = color
     ctx.lineWidth = brushWidth
     ctx.stroke()
-    ctx.strokeStyle = color
-    ctx.lineWidth = brushWidth
-    ctx.shadowBlur = 10
+    ctx.shadowBlur = 1
+    ctx.shadowColor = 'rgba(255, 255, 255, 0.95)'
+    ctx.stroke()
+    ctx.shadowBlur = 2
+    ctx.shadowColor = 'rgba(255, 255, 255, 0.85)'
+    ctx.stroke()
+    ctx.shadowBlur = 3
+    ctx.shadowColor = color
+    ctx.stroke()
+    ctx.shadowBlur = 4
+    ctx.shadowColor = color
+    ctx.stroke()
+    ctx.shadowBlur = 5
+    ctx.shadowColor = color
     ctx.stroke()
     ctx.closePath()
   }
