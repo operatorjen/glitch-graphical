@@ -71,27 +71,28 @@ if (id === '/') {
   }
 
   function displayGrid() {
-    const bw = canvasGrid.width
-    const bh = canvasGrid.height
+    const bw = canvas.width
+    const bh = canvas.height
     const p = 5
     
     for (let x = 0; x <= bw; x += 40) {
-      ctxGrid.moveTo(0.5 + x + p, p)
-      ctxGrid.lineTo(0.5 + x + p, bh + p)
+      ctx.moveTo(0.5 + x + p, p)
+      ctx.lineTo(0.5 + x + p, bh + p)
     }
 
 
     for (let x = 0; x <= bh; x += 40) {
-      ctxGrid.moveTo(p, 0.5 + x + p)
-      ctxGrid.lineTo(bw + p, 0.5 + x + p)
+      ctx.moveTo(p, 0.5 + x + p)
+      ctx.lineTo(bw + p, 0.5 + x + p)
     }
 
-    ctxGrid.strokeStyle = 'rgba(40, 150, 220, 0.4)'
-    ctxGrid.stroke()
+    ctx.strokeStyle = gridColor
+    ctx.stroke()
   }
 
   function hideGrid() {
-    ctxGrid.clearRect(0, 0, canvasGrid.width, canvasGrid.height)
+    gridColor = 'rgba(1, 1, 1, 1.0)'
+    displayGrid()
   }
 
 
@@ -145,19 +146,13 @@ if (id === '/') {
     ctx.strokeStyle = color
     ctx.lineWidth = brushWidth
     ctx.stroke()
-    ctx.shadowBlur = 1
-    ctx.shadowColor = 'rgba(255, 255, 255, 0.95)'
-    ctx.stroke()
-    ctx.shadowBlur = 2
+    ctx.shadowBlur = 10
     ctx.shadowColor = 'rgba(255, 255, 255, 0.85)'
     ctx.stroke()
-    ctx.shadowBlur = 3
+    ctx.shadowBlur = 20
     ctx.shadowColor = color
     ctx.stroke()
-    ctx.shadowBlur = 4
-    ctx.shadowColor = color
-    ctx.stroke()
-    ctx.shadowBlur = 5
+    ctx.shadowBlur = 50
     ctx.shadowColor = color
     ctx.stroke()
     ctx.closePath()
@@ -166,7 +161,7 @@ if (id === '/') {
   function updateDisplay() {
     ws.socket[id].connect.send(JSON.stringify({
       type: 'pad.update',
-      message: canvas.toDataURL('image/png'),
+      message: canvas.toDataURL('image/jpeg'),
       id: id
     }))
   }
@@ -202,8 +197,6 @@ if (id === '/') {
           }
           break
         case 'up':
-          flag = false
-          updateDisplay()
         case 'out':
           flag = false
           break
