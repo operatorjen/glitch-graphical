@@ -229,6 +229,7 @@ if (id !== '/') {
     }, false)
     canvas.addEventListener('touchmove', (e) => {
       setMove('move', e)
+      draw()
     }, false)
   }
 
