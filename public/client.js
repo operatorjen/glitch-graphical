@@ -35,6 +35,8 @@ if (id === '/') {
   let ctx = canvas.getContext('2d')
   
   ctx.translate(0.5, 0.5)
+  ctx.lineCap = 'round';
+  ctx.globalCompositeOperation = 'source-over'
 
   let width = window.innerWidth
   let height = window.innerHeight
@@ -84,29 +86,23 @@ if (id === '/') {
   function display(data) {
     let img = new Image
     img.onload = function () {
-       ctx.drawImage(img, 0, 0) 
+      ctx.drawImage(img, 0, 0) 
     }
     img.src = data
   }
 
   function draw() {
-    ctx.lineCap = 'round';
-    ctx.globalCompositeOperation = 'overlay'
-
+    ctx.beginPath()
     ctx.moveTo(prevX, prevY)
     ctx.lineTo(currX, currY)
     ctx.strokeStyle = color
     ctx.lineWidth = brushWidth
     ctx.stroke()
     ctx.strokeStyle = color2
-    ctx.lineWidth = brushWidth + 5
-    ctx.shadowBlur = 15
+    ctx.lineWidth = brushWidth + 3
+    ctx.shadowBlur = 5
     ctx.stroke()
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.01)'
-    ctx.lineWidth = brushWidth + 6
-    ctx.shadowBlur = 15
-    ctx.stroke()
-
+    ctx.closePath()
   }
 
   function updateDisplay() {
