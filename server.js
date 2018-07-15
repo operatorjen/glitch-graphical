@@ -38,10 +38,10 @@ wss.on('connection', (ws, req) => {
     
     switch (data.type) {
       case 'pad.connect':
-        broadcast
+        data.message = subhosts[data.id]
+        broadcast(data, ws)
       case 'pad.update':
         subhosts[data.id] = data.message
-        clients[data.id] = ws
         ws.id = req.url.replace('/', '')
         broadcast(data, ws)
         break

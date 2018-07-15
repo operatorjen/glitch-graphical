@@ -24,6 +24,7 @@ function clearAll() {
 
 if (id === '/') {
   let btn = document.createElement('button')
+  btn.id = 'new-btn'
   btn.textContent = 'create a new board'
   btn.onclick = function () {
     const pow = Math.pow(36, 10)
@@ -93,7 +94,12 @@ if (id === '/') {
       display(JSON.parse(data.data).message)
     }
 
-    ws.socket[id].connect.onopen = function () {      
+    ws.socket[id].connect.onopen = function () { 
+      ws.socket[id].connect.send(JSON.stringify({
+        type: 'pad.connect',
+        id: id
+      }))
+      
       if (ws.socket[id].connect.readyState !== 1) {
         setTimeout(() => {
           console.log('reconnecting')
