@@ -4,7 +4,9 @@ let id = document.location.pathname
 let color = 'rgba(240, 30, 80, 0.8)'
 let gridActive = false
 
-const colorBtns = document.querySelectorAll('#colors button')
+let newBtn = document.querySelector('#new-btn')
+const colors = document.querySelector('#colors')
+const colorBtns = colors.querySelectorAll('button')
 const gridBtn = document.querySelector('#grid')
 
 colorBtns.forEach(c => {
@@ -22,17 +24,19 @@ function clearAll() {
   colorBtns.forEach(c => c.classList.remove('on')) 
 }
 
-if (id === '/') {
-  let btn = document.createElement('button')
-  btn.id = 'new-btn'
-  btn.textContent = 'create a new board'
-  btn.onclick = function () {
-    const pow = Math.pow(36, 10)
-    const newId = Math.round(pow - Math.random() * pow).toString(36).slice(1).replace('/', '')
-    window.open(`/${newId}`, '_blank')
-  }
-  document.body.appendChild(btn)
-} else {
+let btn = document.createElement('button')
+btn.id = 'new-btn'
+btn.textContent = 'create a new board'
+btn.onclick = function () {
+  const pow = Math.pow(36, 10)
+  const newId = Math.round(pow - Math.random() * pow).toString(36).slice(1).replace('/', '')
+  window.open(`/${newId}`, '_blank')
+}
+document.body.appendChild(btn)
+
+if (id !== '/') {
+  colors.classList.remove('hide')
+  btn.classList.add('hide')
   const canvas = document.querySelector('#sketch-panel')
  
   let ctx = canvas.getContext('2d')
