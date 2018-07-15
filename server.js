@@ -32,13 +32,13 @@ function broadcast (data, ws, sendToAll) {
 }
 
 wss.on('connection', (ws, req) => {
-  ws.open = function (data) {
-    console.log('open', data)
-  }
+
   ws.on('message', (data) => {
     data = JSON.parse(data)
     
     switch (data.type) {
+      case 'pad.connect':
+        broadcast
       case 'pad.update':
         subhosts[data.id] = data.message
         clients[data.id] = ws

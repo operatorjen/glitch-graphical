@@ -119,7 +119,7 @@ if (id === '/') {
   }
 
   function draw() {
-    //ctx.beginPath()
+    ctx.beginPath()
     ctx.moveTo(prevX, prevY)
     ctx.lineTo(currX, currY)
     ctx.strokeStyle = color
@@ -165,7 +165,7 @@ if (id === '/') {
           currY = clientY
 
           flag = true
-          draw()
+  
           break
         case 'up':
         case 'out':
@@ -199,8 +199,7 @@ if (id === '/') {
     canvas.addEventListener('mousemove', (e) => {
       setMove('move', e)
     }, false)
-    
-    
+
     canvas.addEventListener('touchstart', (e) => {
       setMove('up', e)
       updateDisplay()
