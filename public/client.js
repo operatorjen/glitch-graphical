@@ -60,7 +60,7 @@ if (id === '/') {
     gridActive = !gridActive
 
     if (gridActive) {
-      gridColor = 'rgba(40, 150, 220, 0.8)'
+      gridColor = 'rgba(40, 150, 220, 0.5)'
       displayGrid()
       gridBtn.classList.add('on') 
     } else {
@@ -90,7 +90,7 @@ if (id === '/') {
   }
 
   function hideGrid() {
-    
+    ctxGrid.clearRect(0, 0, canvasGrid.width, canvasGrid.height)
   }
 
 
