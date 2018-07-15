@@ -33,10 +33,13 @@ if (id === '/') {
   }
   document.body.appendChild(btn)
 } else {
-  const canvas = document.querySelector('canvas')
+  const canvas = document.querySelector('#sketch-panel')
+  const canvasGrid = document.querySelector('#grid-panel')
   let ctx = canvas.getContext('2d')
+  let ctxGrid = canvasGrid.getContext('2d')
   
   ctx.translate(0.5, 0.5)
+  ctxGrid.translate(0.5, 0.5)
   ctx.lineCap = 'round'
   ctx.globalCompositeOperation = 'screen'
 
@@ -46,41 +49,49 @@ if (id === '/') {
   let currX = 0, currY = 0, prevX = 0, prevY = 0
   let flag = false, drawing = false, currColor
   const brushWidth = 2
+  let gridColor = 'rgba(40, 150, 220, 0.8)'
 
   canvas.width = width
   canvas.height = height
+  canvasGrid.width = width
+  canvasGrid.height = height
   
   gridBtn.onclick = function () {
-  gridActive = !gridActive
-  
-  if (gridActive) {
-    displayGrid()
-    gridBtn.classList.add('on') 
-  } else {
-    hideGrid()
-    gridBtn.classList.remove('on')  
-  }
-}
+    gridActive = !gridActive
 
-function displayGrid() {
-  for (var x = 0; x <= bw; x += 40) {
-    ctx.moveTo(0.5 + x + p, p);
-    ctx.lineTo(0.5 + x + p, bh + p);
+    if (gridActive) {
+      gridColor = 'rgba(40, 150, 220, 0.8)'
+      displayGrid()
+      gridBtn.classList.add('on') 
+    } else {
+      hideGrid()
+      gridBtn.classList.remove('on')  
+    }
   }
 
+  function displayGrid() {
+    const bw = canvasGrid.width
+    const bh = canvasGrid.height
+    const p = 5
+    
+    for (let x = 0; x <= bw; x += 40) {
+      ctxGrid.moveTo(0.5 + x + p, p)
+      ctxGrid.lineTo(0.5 + x + p, bh + p)
+    }
 
-  for (var x = 0; x <= bh; x += 40) {
-      context.moveTo(p, 0.5 + x + p);
-      context.lineTo(bw + p, 0.5 + x + p);
+
+    for (let x = 0; x <= bh; x += 40) {
+      ctxGrid.moveTo(p, 0.5 + x + p)
+      ctxGrid.lineTo(bw + p, 0.5 + x + p)
+    }
+
+    ctxGrid.strokeStyle = 'rgba(40, 150, 220, 0.5)'
+    ctxGrid.stroke()
   }
 
-  context.strokeStyle = "black";
-  context.stroke(); 
-}
-
-function hideGrid() {
-  
-}
+  function hideGrid() {
+    
+  }
 
 
   function connect() {
