@@ -2,7 +2,6 @@ let ws = {}
 
 let id = document.location.pathname
 let color = 'rgba(240, 30, 80, 0.8)'
-let gridActive = false
 
 let newBtn = document.querySelector('#new-btn')
 const colors = document.querySelector('#colors')
