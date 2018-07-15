@@ -2,6 +2,7 @@ let ws = {}
 
 let id = document.location.pathname
 let color = 'rgba(240, 30, 80, 0.8)'
+let color2 = 'rgba(255, 255, 255, 0.01)'
 
 const colorBtns = document.querySelectorAll('#colors button')
 
@@ -32,13 +33,15 @@ if (id === '/') {
 } else {
   const canvas = document.querySelector('canvas')
   let ctx = canvas.getContext('2d')
+  
+  ctx.translate(0.5, 0.5)
 
   let width = window.innerWidth
   let height = window.innerHeight
   let clientX, clientY
   let currX = 0, currY = 0, prevX = 0, prevY = 0
   let flag = false, drawing = false, currColor
-  const brushWidth = 3
+  const brushWidth = 2
 
   canvas.width = width
   canvas.height = height
@@ -89,17 +92,21 @@ if (id === '/') {
   function draw() {
     ctx.lineCap = 'round';
     ctx.globalCompositeOperation = 'overlay'
-    ctx.beginPath()
+
     ctx.moveTo(prevX, prevY)
     ctx.lineTo(currX, currY)
     ctx.strokeStyle = color
     ctx.lineWidth = brushWidth
     ctx.stroke()
-    ctx.strokeStyle = color
-    ctx.lineWidth = brushWidth + 2
-    ctx.shadowBlur = 35
+    ctx.strokeStyle = color2
+    ctx.lineWidth = brushWidth + 5
+    ctx.shadowBlur = 15
     ctx.stroke()
-    ctx.closePath()
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.01)'
+    ctx.lineWidth = brushWidth + 6
+    ctx.shadowBlur = 15
+    ctx.stroke()
+
   }
 
   function updateDisplay() {
@@ -139,21 +146,22 @@ if (id === '/') {
             ctx.closePath()
             drawing = false
           }
-          break;
+          break
         case 'up':
-        case 'out':
-          flag = false;
+          flag = false
           updateDisplay()
-          break;
+        case 'out':
+          flag = false
+          break
         case 'move':
           if (flag) {
             prevX = currX
             prevY = currY
             currX = clientX
             currY = clientY
-            draw();
+            draw()
           }
-          break;
+          break
       }
     }
 
