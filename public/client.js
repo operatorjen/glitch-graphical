@@ -119,7 +119,7 @@ if (id === '/') {
   }
 
   function draw() {
-    ctx.beginPath()
+    //ctx.beginPath()
     ctx.moveTo(prevX, prevY)
     ctx.lineTo(currX, currY)
     ctx.strokeStyle = color
@@ -165,15 +165,7 @@ if (id === '/') {
           currY = clientY
 
           flag = true
-          drawing = true
-
-          if (drawing) {
-            ctx.beginPath()
-            ctx.fillStyle = color
-            ctx.fillRect(currX, currY, 2, 2)
-            ctx.closePath()
-            drawing = false
-          }
+          draw()
           break
         case 'up':
         case 'out':
@@ -205,6 +197,21 @@ if (id === '/') {
     }, false)
 
     canvas.addEventListener('mousemove', (e) => {
+      setMove('move', e)
+    }, false)
+    
+    
+    canvas.addEventListener('touchstart', (e) => {
+      setMove('up', e)
+      updateDisplay()
+    }, false)
+    canvas.addEventListener('touchend', (e) => {
+      setMove('down', e)
+    }, false)
+    canvas.addEventListener('touchcancel', (e) => {
+      setMove('out', e)
+    }, false)
+    canvas.addEventListener('touchmove', (e) => {
       setMove('move', e)
     }, false)
   }
