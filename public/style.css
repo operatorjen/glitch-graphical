@@ -22,7 +22,7 @@ button {
   height: 20px;
   width: 20px;
   padding: 0;
-  border: 0;
+  border: 2px solid transparent;
   display: inline-block;
 }
 
@@ -31,13 +31,17 @@ button {
 }
 
 #b {
-  background-color: rgba(40, 130, 230, 0.8);
+  background-color: rgba(40, 120, 230, 0.8);
 }
 
 #c {
-  background-color: rgba(20, 200, 110, 0.8);
+  background-color: rgba(10, 200, 110, 0.8);
 }
 
 #d {
-  background-color: rgba(240, 100, 10, 0.8);
+  background-color: rgba(120, 110, 210, 0.8);
+}
+
+#colors .on {
+  border: 2px solid #f0f; 
 }

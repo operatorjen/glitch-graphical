@@ -1,6 +1,24 @@
 let ws = {}
 
 let id = document.location.pathname
+let color = 'rgba(240, 30, 80, 0.8)'
+
+const colorBtns = document.querySelectorAll('#colors button')
+
+colorBtns.forEach(c => {
+  if (color === c.getAttribute('data-color')) {
+    c.classList.add('on') 
+  }
+  c.onclick = function () {
+    clearAll()
+    color = c.getAttribute('data-color') 
+    c.classList.add('on')
+  }
+})
+
+function clearAll() {
+  colorBtns.forEach(c => c.classList.remove('on')) 
+}
 
 if (id === '/') {
   let btn = document.createElement('button')
@@ -20,7 +38,6 @@ if (id === '/') {
   let clientX, clientY
   let currX = 0, currY = 0, prevX = 0, prevY = 0
   let flag = false, drawing = false, currColor
-  let color = 'rgb(10, 200, 150)'
   const brushWidth = 3
 
   canvas.width = width
@@ -71,16 +88,16 @@ if (id === '/') {
 
   function draw() {
     ctx.lineCap = 'round';
-    ctx.globalCompositeOperation = 'screen'
+    ctx.globalCompositeOperation = 'overlay'
     ctx.beginPath()
     ctx.moveTo(prevX, prevY)
     ctx.lineTo(currX, currY)
     ctx.strokeStyle = color
     ctx.lineWidth = brushWidth
     ctx.stroke()
-    ctx.strokeStyle = 'rgb(200, 10, 10)'
+    ctx.strokeStyle = color
     ctx.lineWidth = brushWidth + 2
-    ctx.shadowBlur = 15
+    ctx.shadowBlur = 35
     ctx.stroke()
     ctx.closePath()
   }
