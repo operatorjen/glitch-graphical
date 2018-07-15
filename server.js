@@ -18,13 +18,13 @@ const wss = new WebSocketServer({
   server: server
 })
 
-function broadcast (data, id, sendToAll) {
+function broadcast (data, id, ws, sendToAll) {
   wss.clients.forEach((client) => {
     if (client && client.send) {
       if (sendToAll) {
         client.send(JSON.stringify(data))
-      } else if (client === clients[id]) {
-        console.log('got here')
+      } else if (client === clients[id] && client !== ws) {
+        console.log('got here', id)
         clients[id].send(JSON.stringify(data))
       }
     }
@@ -42,7 +42,7 @@ wss.on('connection', (ws) => {
       case 'pad.update':
         subhosts[ws] = data.message
         clients[data.id] = ws
-        broadcast(data, data.id)
+        broadcast(data, data.id, ws)
         break
       default:
         break

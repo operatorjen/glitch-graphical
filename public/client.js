@@ -7,7 +7,7 @@ if (id === '/') {
   btn.textContent = 'create a new board'
   btn.onclick = function () {
     const pow = Math.pow(36, 10)
-    const newId = Math.round(pow - Math.random() * pow).toString(36).slice(1)
+    const newId = Math.round(pow - Math.random() * pow).toString(36).slice(1).replace('/', '')
     window.open(`/${newId}`, '_blank')
   }
   document.body.appendChild(btn)
