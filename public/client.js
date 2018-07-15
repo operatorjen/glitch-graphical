@@ -35,8 +35,8 @@ if (id === '/') {
   let ctx = canvas.getContext('2d')
   
   ctx.translate(0.5, 0.5)
-  ctx.lineCap = 'round';
-  ctx.globalCompositeOperation = 'source-over'
+  ctx.lineCap = 'round'
+  ctx.globalCompositeOperation = 'screen'
 
   let width = window.innerWidth
   let height = window.innerHeight
@@ -98,9 +98,9 @@ if (id === '/') {
     ctx.strokeStyle = color
     ctx.lineWidth = brushWidth
     ctx.stroke()
-    ctx.strokeStyle = color2
-    ctx.lineWidth = brushWidth + 3
-    ctx.shadowBlur = 5
+    ctx.strokeStyle = color
+    ctx.lineWidth = brushWidth
+    ctx.shadowBlur = 10
     ctx.stroke()
     ctx.closePath()
   }
