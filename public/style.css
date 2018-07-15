@@ -19,8 +19,8 @@ button {
 
 #colors button, #grid {
   font-size: 0px; 
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
   padding: 0;
   border: 2px solid transparent;
   display: inline-block;
@@ -44,28 +44,6 @@ button {
 
 #colors .on {
   border: 2px solid #f0f; 
-}
-
-#grid {
-  font-family: Verdana;
-  padding: 2px;
-  color: rgba(10, 200, 230, 0.9);
-  line-height: 14px;
-  border-bottom: 1px solid rgba(10, 200, 230, 0.5);
-  border-right: 1px solid rgba(10, 200, 230, 0.5);
-  border-left: 1px solid rgba(10, 200, 230, 0.5);
-  position: fixed;
-  top: 0;
-  left: 110px;
-  background-color: rgba(1, 1, 1, 0.2);
-  font-size: 12px;
-  z-index: 5;
-}
-
-#grid.on {
-  background-color: rgba(10, 200, 230, 0.5);
-  color: rgb(1, 1, 1);
-  border: rgb(1, 1. 1);
 }
 
 #sketch-panel {

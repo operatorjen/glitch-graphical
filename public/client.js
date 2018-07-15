@@ -2,7 +2,6 @@ let ws = {}
 
 let id = document.location.pathname
 let color = 'rgba(240, 30, 80, 0.8)'
-let color2 = 'rgba(255, 255, 255, 0.01)'
 let gridActive = false
 
 const colorBtns = document.querySelectorAll('#colors button')
@@ -34,46 +33,31 @@ if (id === '/') {
   document.body.appendChild(btn)
 } else {
   const canvas = document.querySelector('#sketch-panel')
-  const canvasGrid = document.querySelector('#grid-panel')
+ 
   let ctx = canvas.getContext('2d')
-  let ctxGrid = canvasGrid.getContext('2d')
-  
+
   ctx.translate(0.5, 0.5)
-  ctxGrid.translate(0.5, 0.5)
   ctx.lineCap = 'round'
   ctx.globalCompositeOperation = 'screen'
   
-  const brushWidth = 5
+  const brushWidth = 3
 
   let width = window.innerWidth
   let height = window.innerHeight
   let clientX, clientY
   let currX = 0, currY = 0, prevX = 0, prevY = 0
   let flag = false, drawing = false, currColor
-  let gridColor = 'rgba(40, 150, 220, 0.8)'
+  let gridColor = 'rgba(40, 150, 220, 0.7)'
 
   canvas.width = width
   canvas.height = height
-  canvasGrid.width = width
-  canvasGrid.height = height
-  
-  gridBtn.onclick = function () {
-    gridActive = !gridActive
-
-    if (gridActive) {
-      displayGrid()
-      gridBtn.classList.add('on') 
-    } else {
-
-    }
-  }
 
   function displayGrid() {
     const bw = canvas.width
     const bh = canvas.height
     const p = 0
     
-    ctx.strokeWidth = 1
+    ctx.lineWidth = 1
     
     for (let x = 0; x <= bw; x += 40) {
       ctx.moveTo(0.5 + x + p, p)
@@ -88,14 +72,8 @@ if (id === '/') {
     ctx.strokeStyle = gridColor
     ctx.stroke()
     
-    ctx.strokeWidth = 5
+    ctx.lineWidth = brushWidth
   }
-
-  function changeGrid() {
-    gridColor = 'rgb(1, 1, 1)'
-    displayGrid()
-  }
-
 
   function connect() {
     ws.host = document.location.host
@@ -233,4 +211,5 @@ if (id === '/') {
 
   connect()
   setDraw()
+  displayGrid()
 }
