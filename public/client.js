@@ -197,39 +197,39 @@ if (id === '/') {
       }
     }
 
-    canvas.addEventListener('mouseup', (e) => {
+    canvas.addEventListener('mouseup', (ev) => {
       ev.preventDefault()
-      setMove('up', e)
+      setMove('up', ev)
       updateDisplay()
     }, false)
-    canvas.addEventListener('mousedown', (e) => {
+    canvas.addEventListener('mousedown', (ev) => {
       ev.preventDefault()
-      setMove('down', e)
+      setMove('down', ev)
     }, false)
-    canvas.addEventListener('mouseout', (e) => {
+    canvas.addEventListener('mouseout', (ev) => {
       ev.preventDefault()
-      setMove('out', e)
+      setMove('out', ev)
     }, false)
-    canvas.addEventListener('mousemove', (e) => {
+    canvas.addEventListener('mousemove', (ev) => {
       ev.preventDefault()
-      setMove('move', e)
+      setMove('move', ev)
     }, false)
-    canvas.addEventListener('touchstart', (e) => {
+    canvas.addEventListener('touchstart', (ev) => {
       ev.preventDefault()
-      setMove('up', e)
+      setMove('down', ev)
+      updateDisplay()
     }, false)
-    canvas.addEventListener('touchend', (e) => {
+    canvas.addEventListener('touchend', (ev) => {
       ev.preventDefault()
-      setMove('up', e)
-      alert('ended')
+      setMove('up', ev)
     }, false)
-    canvas.addEventListener('touchcancel', (e) => {
+    canvas.addEventListener('touchcancel', (ev) => {
       ev.preventDefault()
-      setMove('out', e)
+      setMove('out', ev)
     }, false)
-    canvas.addEventListener('touchmove', (e) => {
+    canvas.addEventListener('touchmove', (ev) => {
       ev.preventDefault()
-      setMove('move', e)
+      setMove('move', ev)
     }, false)
   }
   
