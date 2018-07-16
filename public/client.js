@@ -41,6 +41,7 @@ eraser.onclick = function (ev) {
   
   if (erasing) {
     eraser.classList.add('on') 
+    color = 'rgba(0, 0, 0, 0)'
   } else {
     eraser.classList.remove('on') 
   }
@@ -125,24 +126,33 @@ if (id === '/') {
 
   function draw(local = false) {
     ctx.beginPath()
-    ctx.globalCompositeOperation = 'source-over'
-    ctx.moveTo(prevX, prevY)
-    ctx.lineTo(currX, currY)
-    ctx.strokeStyle = color
-    ctx.lineWidth = brushWidth
-    ctx.stroke()
-    ctx.shadowBlur = 4
-    ctx.shadowColor = 'rgba(255, 255, 255, 0.75)'
-    ctx.stroke()
-    ctx.shadowBlur = 3
-    ctx.shadowColor = color
-    ctx.stroke()
-    ctx.shadowBlur = 5
-    ctx.shadowColor = color
-    ctx.stroke()
-    ctx.closePath
+    if (erasing) {
+      ctx.globalCompositeOperation = 'destination-out'
+      ctx.moveTo(prevX, prevY)
+      ctx.lineTo(currX, currY)
+      ctx.strokeStyle = color
+      ctx.lineWidth = brushWidth
+      ctx.stroke()
+    } else {
+      ctx.globalCompositeOperation = 'source-over'
+      ctx.moveTo(prevX, prevY)
+      ctx.lineTo(currX, currY)
+      ctx.strokeStyle = color
+      ctx.lineWidth = brushWidth
+      ctx.stroke()
+      ctx.shadowBlur = 4
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.75)'
+      ctx.stroke()
+      ctx.shadowBlur = 3
+      ctx.shadowColor = color
+      ctx.stroke()
+      ctx.shadowBlur = 5
+      ctx.shadowColor = color
+      ctx.stroke()
+    }
+    ctx.closePath()
 
-    if (local) {
+    if (local && !erasing) {
       lastPath.push({
         prevX,
         prevY,
