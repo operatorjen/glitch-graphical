@@ -47,7 +47,7 @@ if (id === '/') {
   ctx.lineCap = 'round'
   ctx.globalCompositeOperation = 'screen'
   
-  const brushWidth = 3
+  const brushWidth = 2
 
   let width = window.innerWidth
   let height = window.innerHeight
@@ -137,13 +137,13 @@ if (id === '/') {
     ctx.strokeStyle = color
     ctx.lineWidth = brushWidth
     ctx.stroke()
-    ctx.shadowBlur = 15
-    ctx.shadowColor = 'rgba(255, 255, 255, 0.85)'
+    ctx.shadowBlur = 13
+    ctx.shadowColor = 'rgba(255, 255, 255, 0.55)'
     ctx.stroke()
-    ctx.shadowBlur = 10
+    ctx.shadowBlur = 5
     ctx.shadowColor = color
     ctx.stroke()
-    ctx.shadowBlur = 15
+    ctx.shadowBlur = 7
     ctx.shadowColor = color
     ctx.stroke()
   }
@@ -151,7 +151,7 @@ if (id === '/') {
   function updateDisplay() {
     ws.socket[id].connect.send(JSON.stringify({
       type: 'pad.update',
-      message: canvas.toDataURL('image/png'),
+      message: canvas.toDataURL('image/jpeg'),
       id: id
     }))
   }
