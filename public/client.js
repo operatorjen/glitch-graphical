@@ -163,10 +163,9 @@ if (id === '/') {
 
   function setDraw() {
     function setMove(type, e) {
-      console.log(e)
-      if (e.touches) {
-        clientX = e.touches[0].clientX
-        clientY = e.touches[0].clientY
+      if (e.changedTouches) {
+        clientX = e.changedTouches[0].pageX
+        clientY = e.changedTouches[0].pageY
       } else {
         clientX = e.clientX
         clientY = e.clientY
@@ -178,7 +177,6 @@ if (id === '/') {
           prevY = currY
           currX = clientX
           currY = clientY
-
           flag = true
           break
         case 'up':
@@ -217,11 +215,11 @@ if (id === '/') {
     canvas.addEventListener('touchstart', (ev) => {
       ev.preventDefault()
       setMove('down', ev)
-      updateDisplay()
     }, false)
     canvas.addEventListener('touchend', (ev) => {
       ev.preventDefault()
       setMove('up', ev)
+      updateDisplay()
     }, false)
     canvas.addEventListener('touchcancel', (ev) => {
       ev.preventDefault()
