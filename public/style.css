@@ -20,6 +20,8 @@ button#new-btn {
   z-index: 10;
 }
 
+#note
+
 #colors {
   position: fixed;
   top: 0;
