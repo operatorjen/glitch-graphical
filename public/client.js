@@ -1,13 +1,15 @@
 let ws = {}
 
 let id = document.location.pathname
-let color = 'rgba(240, 30, 80, 0.8)'
+let color = 'rgb(240, 30, 80)'
 
 let newBtn = document.querySelector('#new-btn')
 const colors = document.querySelector('#colors')
 const colorBtns = colors.querySelectorAll('button')
 const gridBtn = document.querySelector('#grid')
 const note = document.querySelector('#note')
+
+let lastPath = []
 
 colorBtns.forEach(c => {
   if (color === c.getAttribute('data-color')) {
@@ -45,7 +47,6 @@ if (id === '/') {
 
   ctx.translate(0.5, 0.5)
   ctx.lineCap = 'round'
-  ctx.globalCompositeOperation = 'screen'
   
   const brushWidth = 2
 
@@ -58,8 +59,6 @@ if (id === '/') {
 
   canvas.width = width
   canvas.height = height
-  
-  let lastPath = ''
 
   function displayGrid() {
     const bw = canvas.width
@@ -123,43 +122,67 @@ if (id === '/') {
     }
   }
 
-  function display(data) {
-    let img = new Image
-    img.onload = function () {
-      ctx.drawImage(img, 0, 0) 
+  function display(data, local = false) {
+    if (data.length) {
+      data.map(d => {
+        prevX = d.prevX
+        prevY = d.prevY
+        currX = d.currX
+        currY = d.currY
+        color = d.color
+        draw(local)
+      })
     }
-    img.src = data
   }
 
-  function draw() {
+  function draw(local = false) {
+    ctx.globalCompositeOperation = 'source-over'
     ctx.moveTo(prevX, prevY)
     ctx.lineTo(currX, currY)
     ctx.strokeStyle = color
     ctx.lineWidth = brushWidth
     ctx.stroke()
-    ctx.shadowBlur = 13
-    ctx.shadowColor = 'rgba(255, 255, 255, 0.55)'
+    ctx.shadowBlur = 4
+    ctx.shadowColor = 'rgba(255, 255, 255, 0.75)'
+    ctx.stroke()
+    ctx.shadowBlur = 3
+    ctx.shadowColor = color
     ctx.stroke()
     ctx.shadowBlur = 5
     ctx.shadowColor = color
     ctx.stroke()
-    ctx.shadowBlur = 7
-    ctx.shadowColor = color
+
+    if (local) {
+      lastPath.push({
+        prevX,
+        prevY,
+        currX,
+        currY,
+        color
+      })
+    }
+  }
+  
+  function erase() {
+    ctx.beginPath()
+    ctx.globalCompositeOperation = 'copy'
+    ctx.lineTo(prevX, prevY)
+    ctx.lineTo(currX, currY)
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0)'
+    ctx.lineWidth = brushWidth + 5
     ctx.stroke()
+    ctx.closePath()
   }
 
   function updateDisplay() {
     ws.socket[id].connect.send(JSON.stringify({
       type: 'pad.update',
-      message: canvas.toDataURL('image/jpeg'),
+      message: lastPath,
       id: id
     }))
   }
 
   function setDraw() {
-    ctx = canvas.getContext('2d')
-    ctx.beginPath()
-
     function setMove(type, e) {
       if (e.touches) {
         clientX = e.touches[0].clientX
@@ -180,10 +203,8 @@ if (id === '/') {
           drawing = true
           
           if (drawing) {
-            ctx.beginPath()
             ctx.fillStyle = color
             ctx.fillRect(currX, currY, 3, 3)
-            ctx.closePath()
             drawing = false
           }
           break
@@ -197,7 +218,7 @@ if (id === '/') {
             prevY = currY
             currX = clientX
             currY = clientY
-            draw()
+            draw(true)
           }
           break
       }
@@ -230,8 +251,25 @@ if (id === '/') {
       setMove('move', e)
     }, false)
   }
+  
+  ctx = canvas.getContext('2d')
+  ctx.beginPath()
 
   connect()
   setDraw()
-  displayGrid()
+  //displayGrid()
+  
+  function keypress(e) {
+    const evt = window.event ? event : e
+    console.log(evt.keyCode, evt.ctrlKey, evt.metaKey)
+    if (evt.keyCode === 90 && (evt.ctrlKey || evt.metaKey)) {
+      // undo
+      const undoPath = lastPath.pop()
+      erase()
+      updateDisplay()
+    }
+  }
+
+  document.onkeydown = keypress;
+
 }
