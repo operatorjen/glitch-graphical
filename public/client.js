@@ -16,15 +16,11 @@ colorBtns.forEach(c => {
     c.classList.add('on') 
   }
   c.onclick = function () {
-    clearAll()
+    colorBtns.forEach(c => c.classList.remove('on')) 
     color = c.getAttribute('data-color') 
     c.classList.add('on')
   }
 })
-
-function clearAll() {
-  colorBtns.forEach(c => c.classList.remove('on')) 
-}
 
 let btn = document.createElement('button')
 btn.id = 'new-btn'
@@ -41,14 +37,14 @@ if (id === '/') {
 } else {
   colors.classList.remove('hide')
   btn.classList.add('hide')
+  
   const canvas = document.querySelector('#sketch-panel')
+  const brushWidth = 2
  
   let ctx = canvas.getContext('2d')
 
   ctx.translate(0.5, 0.5)
   ctx.lineCap = 'round'
-  
-  const brushWidth = 2
 
   let width = window.innerWidth
   let height = window.innerHeight
@@ -129,6 +125,7 @@ if (id === '/') {
     ctx.shadowBlur = 5
     ctx.shadowColor = color
     ctx.stroke()
+    ctx.closePath
 
     if (local) {
       lastPath.push({
@@ -183,15 +180,6 @@ if (id === '/') {
           currY = clientY
 
           flag = true
-          drawing = true
-          
-          if (drawing) {
-            ctx.beginPath()
-            ctx.fillStyle = color
-            ctx.fillRect(currX, currY, 3, 3)
-            ctx.closePath()
-            drawing = false
-          }
           break
         case 'up':
         case 'out':
@@ -204,6 +192,7 @@ if (id === '/') {
             currX = clientX
             currY = clientY
             draw(true)
+            ctx.closePath()
           }
           break
       }
@@ -224,10 +213,11 @@ if (id === '/') {
     }, false)
     canvas.addEventListener('touchstart', (e) => {
       setMove('down', e)
-      updateDisplay()
+      
     }, false)
     canvas.addEventListener('touchend', (e) => {
       setMove('up', e)
+      updateDisplay()
     }, false)
     canvas.addEventListener('touchcancel', (e) => {
       setMove('out', e)
