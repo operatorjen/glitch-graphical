@@ -87,3 +87,23 @@ canvas {
   bottom: 0;
   right: 0;
 }
+
+#actions {
+  position: fixed;
+  right: 0;
+  top: 0;
+  background-color: rgba(200, 200, 10, 0.8);
+  padding: 2px 5px;
+  z-index: 10;
+}
+
+#actions button {
+  font-size: 0.9rem;
+  background-color: transparent;
+  color: #111;
+}
+
+#actions button.on {
+  color: rgba(20, 225, 220, 0.8);
+  background-color: rgba(220, 100, 10, 0.8);
+}

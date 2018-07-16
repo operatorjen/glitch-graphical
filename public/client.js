@@ -8,6 +8,10 @@ const colors = document.querySelector('#colors')
 const colorBtns = colors.querySelectorAll('button')
 const gridBtn = document.querySelector('#grid')
 const note = document.querySelector('#note')
+const actions = document.querySelector('#actions')
+const eraser = document.querySelector('#erase')
+
+let erasing = false
 
 let lastPath = []
 
@@ -32,11 +36,22 @@ btn.onclick = function () {
 }
 document.body.appendChild(btn)
 
+eraser.onclick = function (ev) {
+  erasing = !erasing
+  
+  if (erasing) {
+    eraser.classList.add('on') 
+  } else {
+    eraser.classList.remove('on') 
+  }
+}
+
 if (id === '/') {
   note.classList.remove('hide')
 } else {
   colors.classList.remove('hide')
   btn.classList.add('hide')
+  actions.classList.remove('hide')
   
   const canvas = document.querySelector('#sketch-panel')
   const brushWidth = 2
