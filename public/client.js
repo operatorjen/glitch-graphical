@@ -218,18 +218,17 @@ if (id !== '/') {
     }, false)
 
     canvas.addEventListener('touchstart', (e) => {
-      setMove('up', e)
-      updateDisplay()
+      setMove('down', e)
     }, false)
     canvas.addEventListener('touchend', (e) => {
-      setMove('down', e)
+      setMove('up', e)
+      updateDisplay()
     }, false)
     canvas.addEventListener('touchcancel', (e) => {
       setMove('out', e)
     }, false)
     canvas.addEventListener('touchmove', (e) => {
       setMove('move', e)
-      draw()
     }, false)
   }
 
