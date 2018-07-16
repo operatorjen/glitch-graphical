@@ -1,4 +1,5 @@
 body {
+  font-family: Helvetica;
   background-color: rgb(1, 1, 1);
   background-size: 40px 40px;
   background-image: linear-gradient(to right, rgba(20, 170, 200, 0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(20, 170, 200, 0.5) 1px, transparent 1px);
@@ -29,11 +30,24 @@ button#new-btn:hover {
 #note {
   font-size: 1.5rem;
   line-height: 2rem;
-  color: rgba(255, 10, 200, 0.5);
+  color: rgba(45, 210, 220, 0.6);
   position: absolute;
   top: 0;
   left: 0;
-  padding-top: 100px;
+  padding: 110px 10px 10px 10px;
+  background-color: rgba(220, 10, 150, 0.3);
+  font-size: 1.3rem;
+}
+
+#note a {
+  position: absolute;
+  right: 20px;
+  bottom: -20px;
+  display: inline-block;
+  background-color: rgba(220, 100, 90, 0.8);
+  text-decoration: none;
+  padding: 2px 10px;
+  color: rgba(220, 170, 160, 0.7);
 }
 
 #colors {
