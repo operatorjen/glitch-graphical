@@ -1,5 +1,7 @@
 body {
   background-color: rgb(1, 1, 1);
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(20, 100, 150, 0.5) 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 
 button {
@@ -20,7 +22,11 @@ button#new-btn {
   z-index: 10;
 }
 
-#note
+#note {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: rgba(255, 10, 200, 0.5);
+}
 
 #colors {
   position: fixed;

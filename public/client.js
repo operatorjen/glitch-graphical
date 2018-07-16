@@ -7,6 +7,7 @@ let newBtn = document.querySelector('#new-btn')
 const colors = document.querySelector('#colors')
 const colorBtns = colors.querySelectorAll('button')
 const gridBtn = document.querySelector('#grid')
+const note = document.querySelector('#note')
 
 colorBtns.forEach(c => {
   if (color === c.getAttribute('data-color')) {
@@ -33,7 +34,9 @@ btn.onclick = function () {
 }
 document.body.appendChild(btn)
 
-if (id !== '/') {
+if (id === '/') {
+  note.classList.remove('hide')
+} else {
   colors.classList.remove('hide')
   btn.classList.add('hide')
   const canvas = document.querySelector('#sketch-panel')
