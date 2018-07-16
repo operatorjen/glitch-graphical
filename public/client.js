@@ -54,10 +54,12 @@ if (id === '/') {
   let clientX, clientY
   let currX = 0, currY = 0, prevX = 0, prevY = 0
   let flag = false, drawing = false, currColor
-  let gridColor = 'rgba(40, 150, 220, 0.7)'
+  let gridColor = 'rgba(20, 170, 200, 0.5)'
 
   canvas.width = width
   canvas.height = height
+  
+  let lastPath = ''
 
   function displayGrid() {
     const bw = canvas.width
@@ -78,7 +80,6 @@ if (id === '/') {
 
     ctx.strokeStyle = gridColor
     ctx.stroke()
-    
     ctx.lineWidth = brushWidth
   }
 
@@ -131,34 +132,33 @@ if (id === '/') {
   }
 
   function draw() {
-    ctx.beginPath()
     ctx.moveTo(prevX, prevY)
     ctx.lineTo(currX, currY)
     ctx.strokeStyle = color
     ctx.lineWidth = brushWidth
     ctx.stroke()
-    ctx.shadowBlur = 16
+    ctx.shadowBlur = 15
     ctx.shadowColor = 'rgba(255, 255, 255, 0.85)'
     ctx.stroke()
     ctx.shadowBlur = 10
     ctx.shadowColor = color
     ctx.stroke()
-    ctx.shadowBlur = 20
+    ctx.shadowBlur = 15
     ctx.shadowColor = color
     ctx.stroke()
-    ctx.closePath()
   }
 
   function updateDisplay() {
     ws.socket[id].connect.send(JSON.stringify({
       type: 'pad.update',
-      message: canvas.toDataURL('image/jpeg'),
+      message: canvas.toDataURL('image/png'),
       id: id
     }))
   }
 
   function setDraw() {
     ctx = canvas.getContext('2d')
+    ctx.beginPath()
 
     function setMove(type, e) {
       if (e.touches) {
@@ -207,19 +207,15 @@ if (id === '/') {
       setMove('up', e)
       updateDisplay()
     }, false)
-
     canvas.addEventListener('mousedown', (e) => {
       setMove('down', e)
     }, false)
-
     canvas.addEventListener('mouseout', (e) => {
       setMove('out', e)
     }, false)
-
     canvas.addEventListener('mousemove', (e) => {
       setMove('move', e)
     }, false)
-
     canvas.addEventListener('touchstart', (e) => {
       setMove('down', e)
       updateDisplay()

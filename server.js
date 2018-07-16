@@ -32,7 +32,6 @@ function broadcast (data, ws, sendToAll) {
 }
 
 wss.on('connection', (ws, req) => {
-
   ws.on('message', (data) => {
     data = JSON.parse(data)
     
