@@ -8,10 +8,6 @@ const colors = document.querySelector('#colors')
 const colorBtns = colors.querySelectorAll('button')
 const gridBtn = document.querySelector('#grid')
 const note = document.querySelector('#note')
-const actions = document.querySelector('#actions')
-const eraser = document.querySelector('#erase')
-
-let erasing = false
 
 let lastPath = []
 
@@ -36,24 +32,12 @@ btn.onclick = function () {
 }
 document.body.appendChild(btn)
 
-eraser.onclick = function (ev) {
-  erasing = !erasing
-  
-  if (erasing) {
-    eraser.classList.add('on') 
-    color = 'rgba(0, 0, 0, 0)'
-  } else {
-    eraser.classList.remove('on') 
-  }
-}
-
 if (id === '/') {
   note.classList.remove('hide')
 } else {
   colors.classList.remove('hide')
   btn.classList.add('hide')
-  actions.classList.remove('hide')
-  
+
   const canvas = document.querySelector('#sketch-panel')
   const brushWidth = 2
  
@@ -86,7 +70,7 @@ if (id === '/') {
     }
 
     ws.socket[id].connect.onmessage = function (data) {
-      lastPath = JSON.parse(data.data).message
+      lastPath = JSON.parse(data.data).message || []
       display(lastPath)
     }
 
@@ -126,27 +110,23 @@ if (id === '/') {
   }
 
   function draw(local = false) {
-    if (erasing) {
-      erase()
-    } else {
-      ctx.beginPath()
-      ctx.globalCompositeOperation = 'source-over'
-      ctx.moveTo(prevX, prevY)
-      ctx.lineTo(currX, currY)
-      ctx.strokeStyle = color
-      ctx.lineWidth = brushWidth
-      ctx.stroke()
-      ctx.shadowBlur = 4
-      ctx.shadowColor = 'rgba(255, 255, 255, 0.75)'
-      ctx.stroke()
-      ctx.shadowBlur = 3
-      ctx.shadowColor = color
-      ctx.stroke()
-      ctx.shadowBlur = 5
-      ctx.shadowColor = color
-      ctx.stroke()
-      ctx.closePath()
-    }
+    ctx.beginPath()
+    ctx.globalCompositeOperation = 'source-over'
+    ctx.moveTo(prevX, prevY)
+    ctx.lineTo(currX, currY)
+    ctx.strokeStyle = color
+    ctx.lineWidth = brushWidth
+    ctx.stroke()
+    ctx.shadowBlur = 4
+    ctx.shadowColor = 'rgba(255, 255, 255, 0.75)'
+    ctx.stroke()
+    ctx.shadowBlur = 3
+    ctx.shadowColor = color
+    ctx.stroke()
+    ctx.shadowBlur = 5
+    ctx.shadowColor = color
+    ctx.stroke()
+    ctx.closePath()
 
     if (local) {
       lastPath.push({
@@ -162,7 +142,6 @@ if (id === '/') {
   function erase() {
     ctx.beginPath()
     ctx.globalCompositeOperation = 'copy'
-
     ctx.lineTo(prevX, prevY)
     ctx.strokeStyle = 'rgba(0, 0, 0, 0)'
     ctx.lineWidth = brushWidth + 5
@@ -172,7 +151,6 @@ if (id === '/') {
     ctx.lineWidth = brushWidth + 5
     ctx.stroke()
     ctx.closePath()
-    ctx.globalCompositeOperation = 'source-over'
   }
 
   function updateDisplay() {
@@ -185,6 +163,7 @@ if (id === '/') {
 
   function setDraw() {
     function setMove(type, e) {
+      console.log(e)
       if (e.touches) {
         clientX = e.touches[0].clientX
         clientY = e.touches[0].clientY
