@@ -113,7 +113,7 @@ if (id === '/') {
   }
 
   function display(data, local = false) {
-    if (data.length) {
+    if (data && data.length) {
       data.map(d => {
         prevX = d.prevX
         prevY = d.prevY
@@ -126,15 +126,10 @@ if (id === '/') {
   }
 
   function draw(local = false) {
-    ctx.beginPath()
     if (erasing) {
-      ctx.globalCompositeOperation = 'destination-out'
-      ctx.moveTo(prevX, prevY)
-      ctx.lineTo(currX, currY)
-      ctx.strokeStyle = color
-      ctx.lineWidth = brushWidth + 5
-      ctx.stroke()
+      erase()
     } else {
+      ctx.beginPath()
       ctx.globalCompositeOperation = 'source-over'
       ctx.moveTo(prevX, prevY)
       ctx.lineTo(currX, currY)
@@ -150,8 +145,8 @@ if (id === '/') {
       ctx.shadowBlur = 5
       ctx.shadowColor = color
       ctx.stroke()
+      ctx.closePath()
     }
-    ctx.closePath()
 
     if (local) {
       lastPath.push({
@@ -266,10 +261,14 @@ if (id === '/') {
 
   function keypress(e) {
     const evt = window.event ? event : e
-    console.log(evt.keyCode, evt.ctrlKey, evt.metaKey)
+    
     if (evt.keyCode === 90 && (evt.ctrlKey || evt.metaKey)) {
       // undo
-      const undoPath = lastPath.pop()
+      for (let i = 0; i < 10; i++) {
+        if (lastPath.length) {
+          lastPath.pop()
+        }
+      }
       erase()
       updateDisplay()
     }

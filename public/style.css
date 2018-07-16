@@ -37,7 +37,6 @@ button#new-btn:hover {
   left: 0;
   padding: 110px 10px 10px 10px;
   background-color: rgba(110, 10, 190, 0.6);
-  font-size: 1.3rem;
   z-index: 2;
 }
 
@@ -64,6 +63,7 @@ button#new-btn:hover {
   margin: 1px;
   padding: 1px 2px;
   color: rgb(210, 10, 130);
+  text-shadow: rgba(10, 210, 101) 0.5px 0 0;
 }
 
 #colors {
@@ -100,6 +100,10 @@ button#new-btn:hover {
 
 #d {
   background-color: rgba(220, 220, 10, 0.8);
+}
+
+#e {
+  background-color: rgba(180, 20, 220, 0.8); 
 }
 
 #colors .on {
