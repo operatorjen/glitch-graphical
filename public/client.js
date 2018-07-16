@@ -55,32 +55,9 @@ if (id === '/') {
   let clientX, clientY
   let currX = 0, currY = 0, prevX = 0, prevY = 0
   let flag = false, drawing = false, currColor
-  let gridColor = 'rgba(20, 170, 200, 0.5)'
 
   canvas.width = width
   canvas.height = height
-
-  function displayGrid() {
-    const bw = canvas.width
-    const bh = canvas.height
-    const p = 0
-    
-    ctx.lineWidth = 1
-    
-    for (let x = 0; x <= bw; x += 40) {
-      ctx.moveTo(0.5 + x + p, p)
-      ctx.lineTo(0.5 + x + p, bh + p)
-    }
-
-    for (let x = 0; x <= bh; x += 40) {
-      ctx.moveTo(p, 0.5 + x + p)
-      ctx.lineTo(bw + p, 0.5 + x + p)
-    }
-
-    ctx.strokeStyle = gridColor
-    ctx.stroke()
-    ctx.lineWidth = brushWidth
-  }
 
   function connect() {
     ws.host = document.location.host
@@ -136,6 +113,7 @@ if (id === '/') {
   }
 
   function draw(local = false) {
+    ctx.beginPath()
     ctx.globalCompositeOperation = 'source-over'
     ctx.moveTo(prevX, prevY)
     ctx.lineTo(currX, currY)
@@ -166,12 +144,17 @@ if (id === '/') {
   function erase() {
     ctx.beginPath()
     ctx.globalCompositeOperation = 'copy'
+
     ctx.lineTo(prevX, prevY)
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0)'
+    ctx.lineWidth = brushWidth + 5
+    ctx.stroke()
     ctx.lineTo(currX, currY)
     ctx.strokeStyle = 'rgba(0, 0, 0, 0)'
     ctx.lineWidth = brushWidth + 5
     ctx.stroke()
     ctx.closePath()
+    ctx.globalCompositeOperation = 'source-over'
   }
 
   function updateDisplay() {
@@ -203,8 +186,10 @@ if (id === '/') {
           drawing = true
           
           if (drawing) {
+            ctx.beginPath()
             ctx.fillStyle = color
             ctx.fillRect(currX, currY, 3, 3)
+            ctx.closePath()
             drawing = false
           }
           break
@@ -253,12 +238,10 @@ if (id === '/') {
   }
   
   ctx = canvas.getContext('2d')
-  ctx.beginPath()
 
   connect()
   setDraw()
-  //displayGrid()
-  
+
   function keypress(e) {
     const evt = window.event ? event : e
     console.log(evt.keyCode, evt.ctrlKey, evt.metaKey)
@@ -270,6 +253,5 @@ if (id === '/') {
     }
   }
 
-  document.onkeydown = keypress;
-
+  document.onkeydown = keypress
 }
