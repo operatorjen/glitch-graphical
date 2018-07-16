@@ -219,10 +219,10 @@ if (id !== '/') {
 
     canvas.addEventListener('touchstart', (e) => {
       setMove('down', e)
+      updateDisplay()
     }, false)
     canvas.addEventListener('touchend', (e) => {
       setMove('up', e)
-      updateDisplay()
     }, false)
     canvas.addEventListener('touchcancel', (e) => {
       setMove('out', e)
