@@ -192,37 +192,43 @@ if (id === '/') {
             currX = clientX
             currY = clientY
             draw(true)
-            ctx.closePath()
           }
           break
       }
     }
 
     canvas.addEventListener('mouseup', (e) => {
+      ev.preventDefault()
       setMove('up', e)
       updateDisplay()
     }, false)
     canvas.addEventListener('mousedown', (e) => {
+      ev.preventDefault()
       setMove('down', e)
     }, false)
     canvas.addEventListener('mouseout', (e) => {
+      ev.preventDefault()
       setMove('out', e)
     }, false)
     canvas.addEventListener('mousemove', (e) => {
+      ev.preventDefault()
       setMove('move', e)
     }, false)
     canvas.addEventListener('touchstart', (e) => {
-      setMove('down', e)
-      
+      ev.preventDefault()
+      setMove('up', e)
     }, false)
     canvas.addEventListener('touchend', (e) => {
+      ev.preventDefault()
       setMove('up', e)
-      updateDisplay()
+      alert('ended')
     }, false)
     canvas.addEventListener('touchcancel', (e) => {
+      ev.preventDefault()
       setMove('out', e)
     }, false)
     canvas.addEventListener('touchmove', (e) => {
+      ev.preventDefault()
       setMove('move', e)
     }, false)
   }
