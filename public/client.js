@@ -86,7 +86,8 @@ if (id === '/') {
     }
 
     ws.socket[id].connect.onmessage = function (data) {
-      display(JSON.parse(data.data).message)
+      lastPath = JSON.parse(data.data).message
+      display(lastPath)
     }
 
     ws.socket[id].connect.onopen = function () { 
@@ -131,7 +132,7 @@ if (id === '/') {
       ctx.moveTo(prevX, prevY)
       ctx.lineTo(currX, currY)
       ctx.strokeStyle = color
-      ctx.lineWidth = brushWidth
+      ctx.lineWidth = brushWidth + 5
       ctx.stroke()
     } else {
       ctx.globalCompositeOperation = 'source-over'
@@ -152,7 +153,7 @@ if (id === '/') {
     }
     ctx.closePath()
 
-    if (local && !erasing) {
+    if (local) {
       lastPath.push({
         prevX,
         prevY,
